@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>JSW Paint Complaint Bot</title>
+  <style>
+    /* Global */
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(120deg, #f0f4f8, #d9e2ec);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .chat-container {
+      width: 400px;
+      max-height: 80vh;
+      background: #ffffff;
+      border-radius: 15px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .header {
+      background: #005b96;
+      color: #fff;
+      padding: 15px;
+      text-align: center;
+      font-size: 1.2rem;
+      font-weight: bold;
+    }
+
+    .messages {
+      flex: 1;
+      padding: 15px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .msg {
+      max-width: 75%;
+      padding: 10px 15px;
+      border-radius: 12px;
+      position: relative;
+      line-height: 1.4;
+      animation: fadeIn 0.3s ease-in;
+    }
+
+    .msg.user {
+      align-self: flex-end;
+      background: #e0f7fa;
+      color: #004d40;
+      border-bottom-right-radius: 0;
+    }
+
+    .msg.bot {
+      align-self: flex-start;
+      background: #e8eaf6;
+      color: #1a237e;
+      border-bottom-left-radius: 0;
+    }
+
+    .input-area {
+      display: flex;
+      padding: 10px;
+      background: #f6f9fc;
+      border-top: 1px solid #ddd;
+    }
+
+    .input-area input[type="text"] {
+      flex: 1;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 20px;
+      outline: none;
+      font-size: 0.9rem;
+    }
+
+    .input-area input[type="submit"] {
+      margin-left: 10px;
+      padding: 10px 20px;
+      background: #005b96;
+      color: #fff;
+      border: none;
+      border-radius: 20px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background 0.2s;
+    }
+
+    .input-area input[type="submit"]:hover {
+      background: #004080;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+  <div class="chat-container">
+    <div class="header">🖌️ JSW Paint Complaint Assistant</div>
+    <div class="messages" id="messages">
+      {% for message in messages %}
+        <div class="msg {{ message.sender }}">
+          <strong>{{ message.sender|title }}:</strong> {{ message.text }}
+        </div>
+      {% endfor %}
+    </div>
+    <form method="post" class="input-area">
+      {% csrf_token %}
+      <input type="text" name="user_input" placeholder="Type your message..." autocomplete="off" required />
+      <input type="submit" value="Send" />
+    </form>
+  </div>
+  <script>
+    // Auto-scroll to bottom
+    const msgContainer = document.getElementById('messages');
+    msgContainer.scrollTop = msgContainer.scrollHeight;
+  </script>
+</body>
+</html>
